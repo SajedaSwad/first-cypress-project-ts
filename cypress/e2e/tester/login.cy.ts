@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-
 import { LoginPage } from "@selector/login-page";
 
 describe("login page", () => {

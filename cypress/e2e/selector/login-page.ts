@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-
 export class LoginPage {
   emailId = "#email-input";
   passwordId = "#password-input";
