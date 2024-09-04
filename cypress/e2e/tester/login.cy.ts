@@ -8,6 +8,7 @@ describe("login page", () => {
     { email: "invaliduser@gmail.com", password: "validpassword" }, //not found email
     { email: "invaliduser", password: "validpassword" }, //invalid format for email
     { email: "validfuser@gmail.com", password: "123" }, //incorrect password
+    { email: "", password: "" }, //empty fields??not work cause the cy,type not accept the empty data
   ];
 
   beforeEach(() => {
@@ -15,8 +16,8 @@ describe("login page", () => {
   });
 
   it("login with valid credentials", () => {
-    loginPage.enterEmail(userInfo[3].email);
-    loginPage.enterPassword(userInfo[3].password);
+    loginPage.enterEmail(userInfo[4].email);
+    loginPage.enterPassword(userInfo[4].password);
     loginPage.clickLogin();
   });
 });
