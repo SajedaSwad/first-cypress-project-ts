@@ -4,6 +4,7 @@ export class LoginPage {
   passwordId = "#password-input";
   loginbutId = "#login-button";
   checkboxId = "#show-password-checkbox";
+  haveaccountID = "#signup-link";
 
   enterEmail(email: string) {
     cy.get(this.emailId).clear().type(email);
@@ -19,5 +20,11 @@ export class LoginPage {
   }
   hidesPassword() {
     cy.get(this.checkboxId).uncheck();
+  }
+  navigateSignUp() {
+    cy.get(this.haveaccountID).click();
+
+    // Verify that the URL is correct
+    cy.url().should("include", "/signup");
   }
 }
