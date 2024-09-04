@@ -5,10 +5,10 @@ export class LoginPage {
   loginbutId = "#login-button";
 
   enterEmail(email: string) {
-    cy.get(this.emailId).type(email);
+    cy.get(this.emailId).clear().type(email);
   }
   enterPassword(password: string) {
-    cy.get(this.passwordId).type(password);
+    cy.get(this.passwordId).clear().type(password);
   }
   clickLogin() {
     cy.get(this.loginbutId).click();
