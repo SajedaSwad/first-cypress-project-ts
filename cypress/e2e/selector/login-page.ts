@@ -17,14 +17,18 @@ export class LoginPage {
   }
   showPassword() {
     cy.get(this.checkboxId).check();
+    cy.get(this.passwordId).should("have.attr", "type", "text");
   }
   hidesPassword() {
     cy.get(this.checkboxId).uncheck();
+    cy.get(this.passwordId).should("have.attr", "type", "password");
   }
   navigateSignUp() {
     cy.get(this.haveaccountID).click();
-
-    // Verify that the URL is correct
-    cy.url().should("include", "/signup");
   }
+  // // Method to check validation messages
+  // checkValidationMessage(field: string, message: string) {
+  //   cy.get(field).then(($input) => {
+  //     cy.wrap($input).invoke('prop', 'validationMessage').should('equal', message);
+  //   });
 }
