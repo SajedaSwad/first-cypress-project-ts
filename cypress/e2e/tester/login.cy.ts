@@ -21,6 +21,7 @@ describe("login page", () => {
     loginPage.enterPassword(userInfo[0].password);
     loginPage.clickLogin();
     cy.wait("@loginReq").its("response.statusCode").should("eq", 200);
+
     // Assert that the page contains the welcome message
     cy.contains("welcome back!").should("be.visible");
   });
@@ -33,6 +34,7 @@ describe("login page", () => {
     cy.wait("@invalidEmail")
       .its("response.statusCode")
       .should("be.oneOf", [401, 400]);
+
     // Assert that the page contains the error message
     cy.contains("email/password combination is not valid").should("be.visible");
   });
@@ -47,6 +49,7 @@ describe("login page", () => {
     cy.wait("@incorrectPassword")
       .its("response.statusCode")
       .should("be.oneOf", [401, 400]);
+
     // Assert that the page contains the error message
     cy.contains("email/password combination is not valid").should("be.visible");
   });
@@ -61,7 +64,6 @@ describe("login page", () => {
       cy.wrap($input)
         .invoke("prop", "validationMessage")
         .should("eq", "Please fill out this field.");
-
       //     // Check for validation messages
       // loginPage.checkValidationMessage('#email-input', 'Please fill out this field.');
     });
@@ -74,6 +76,7 @@ describe("login page", () => {
   });
   it("Navigation to Sign Up Page", () => {
     loginPage.navigateSignUp();
+
     // Verify that the URL is correct
     cy.url().should("include", "/signup");
   });
