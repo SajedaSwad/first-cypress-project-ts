@@ -11,7 +11,7 @@ export class ProjectsPage {
   closeSymbol = ".ant-modal-close";
   cancelForm = "#project-form-cancel-btn";
   navigateProjectsPage() {
-    cy.visit("/projects");
+    cy.visit("http://localhost:3000/projects");
   }
   addNewProjectDisplay() {
     cy.get(this.newProjectId).click();

@@ -13,9 +13,9 @@ describe("projects page", () => {
   const baseUrl = Cypress.config("baseUrl");
   beforeEach(() => {
     cy.session(["name"], () => {
-      if (!baseUrl) {
-        throw new Error("Base URL is not defined");
-      }
+      // if (!baseUrl) {
+      //   throw new Error("Base URL is not defined");
+      // }
       cy.visit(baseUrl);
       cy.visit("/login");
       loginPage.enterEmail(email);
