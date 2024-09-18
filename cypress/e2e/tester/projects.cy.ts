@@ -8,24 +8,16 @@ describe("projects page", () => {
   const password = "validpassword";
   const projectName = `First Project${Date.now()}`;
   const description = "First Project description";
-  const projectNameTooLong = "secondproject".repeat(20);
+  const projectNameTooLong = `secondproject${Date.now()}`.repeat(15);
+
   // Set up the session before running the tests
   const baseUrl = Cypress.config("baseUrl");
   beforeEach(() => {
     cy.session(["name"], () => {
-      // if (!baseUrl) {
-      //   throw new Error("Base URL is not defined");
-      // }
-      cy.visit(baseUrl);
-      cy.visit("/login");
-      loginPage.enterEmail(email);
-      loginPage.enterPassword(password);
-      loginPage.clickLogin();
+      projectsPage.loginWithSession();
       cy.wait(2000);
     });
     projectsPage.navigateProjectsPage();
-    // Restores the session before each test
-    // cy.visit(baseUrl + "/projects");
   });
 
   it("Verify Add New Project Popup Display", () => {
@@ -34,7 +26,6 @@ describe("projects page", () => {
   });
 
   it("Verify Input Fields", () => {
-    // cy.wait(2000);
     projectsPage.addNewProjectDisplay();
     projectsPage.verifyInputFields();
   });
@@ -81,6 +72,40 @@ describe("projects page", () => {
     projectsPage.addValidDescription(description);
     projectsPage.submitProject();
     projectsPage.projectNameLengthValidation();
+  });
+
+  it("should add a project and verify it persists after page refresh", () => {
+    projectsPage.addNewProjectDisplay();
+    projectsPage.addValidProjectName(projectName);
+    projectsPage.addValidDescription(description);
+    projectsPage.submitProject();
+    cy.reload();
+    projectsPage.addNewProjectDisplay();
+  });
+
+  it("should verify project persists after navigating away and back", () => {
+    projectsPage.addNewProjectDisplay();
+
+    // Navigate to time tracker page
+    cy.visit("/timeTracker");
+    cy.url().should("include", "/timeTracker");
+
+    // Navigate back to the projects page
+    cy.visit("/projects");
+    cy.url().should("include", "/projects");
+
+    // Verify the project is still there
+    projectsPage.addNewProjectDisplay();
+  });
+  it("should verify project persists after logout and login", () => {
+    projectsPage.addNewProjectDisplay();
+    projectsPage.logout();
+    loginPage.enterEmail(email);
+    loginPage.enterPassword(password);
+    loginPage.clickLogin();
+    projectsPage.navigateProjectsPage();
+    cy.url().should("include", "/projects");
+    projectsPage.addNewProjectDisplay();
   });
 
   //   it("Display Project Description on Hover", () => {

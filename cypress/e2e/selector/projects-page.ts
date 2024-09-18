@@ -1,5 +1,9 @@
 /// <reference types = "cypress"/>
+import { LoginPage } from "@selector/login-page";
 export class ProjectsPage {
+  loginPage = new LoginPage();
+  email = "validfuser@gmail.com";
+  password = "validpassword";
   ////aded helper
   newProjectId = "#new-project-btn > .ant-btn";
   inputFieldsId = [
@@ -10,6 +14,17 @@ export class ProjectsPage {
   submitProjectId = "#project-form-submit-btn";
   closeSymbol = ".ant-modal-close";
   cancelForm = "#project-form-cancel-btn";
+  baseUrl = Cypress.config("baseUrl");
+  loginWithSession() {
+    if (!this.baseUrl) {
+      throw new Error("Base URL is not defined");
+    }
+    cy.visit(this.baseUrl);
+    cy.visit("/login");
+    this.loginPage.enterEmail(this.email);
+    this.loginPage.enterPassword(this.password);
+    this.loginPage.clickLogin();
+  }
   navigateProjectsPage() {
     cy.visit("http://localhost:3000/projects");
   }
@@ -67,5 +82,9 @@ export class ProjectsPage {
     cy.contains("Project name must be at most 50 characters long").should(
       "be.visible"
     );
+  }
+  logout() {
+    cy.get("#logout-button").click();
+    cy.url().should("include", "/login");
   }
 }
