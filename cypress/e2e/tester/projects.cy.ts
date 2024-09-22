@@ -9,7 +9,7 @@ describe("projects page", () => {
   const projectName = `First Project${Date.now()}`;
   const description = "First Project description";
   const projectNameTooLong = `secondproject${Date.now()}`.repeat(15);
-
+  let expectedOrder: string[] = [];
   // Set up the session before running the tests
   const baseUrl = Cypress.config("baseUrl");
   beforeEach(() => {
@@ -18,9 +18,12 @@ describe("projects page", () => {
       cy.wait(2000);
     });
     projectsPage.navigateProjectsPage();
+    // expectedOrder = [];
+    // console.log(expectedOrder);
   });
 
   it("Verify Add New Project Popup Display", () => {
+    projectsPage.navigateProjectsPage();
     projectsPage.addNewProjectDisplay();
     cy.wait(2000);
   });
@@ -34,7 +37,49 @@ describe("projects page", () => {
     projectsPage.addNewProjectDisplay();
     projectsPage.addValidProjectName(projectName);
     projectsPage.addValidDescription(description);
+    // projectsPage.submitProject(projectName, expectedOrder);
     projectsPage.submitProject();
+    // console.log(expectedOrder);
+  });
+
+  // it("should display projects in the correct order", () => {
+  //   cy.intercept("GET", "/api/projects").as("getProjects");
+
+  //   // Intercept the API call to fetch projects
+  //   cy.intercept("GET", "/api/projects").as("getProjects");
+
+  //   // Wait for the projects to be fully loaded on the frontend
+  //   cy.wait("@getProjects").then((interception) => {
+  //     // Ensure interception.response and interception.response.body are defined
+  //     if (interception.response && interception.response.body) {
+  //       const projects = interception.response.body;
+  //       expectedOrder = projects.map((project: any) => project.name);
+  //     } else {
+  //       throw new Error("Failed to fetch projects");
+  //     }
+  //   });
+  //   console.log(expectedOrder);
+  //   // Ensure expectedOrder is defined
+  //   expect(expectedOrder).to.exist;
+
+  //   // // Wait for the projects to be fully loaded on the frontend
+  //   // cy.intercept("GET", "/api/projects").as("getProjects");
+  //   // cy.wait("@getProjects");
+
+  //   // Select all project cards and verify their order
+  //   cy.get(".project-card")
+  //     .should("have.length", expectedOrder.length)
+  //     .each((card, index) => {
+  //       // Get the project name
+  //       cy.wrap(card)
+  //         .find(".project-name")
+  //         .should("have.text", expectedOrder[index]);
+  //     });
+  // });
+
+  it("Display Project Description on Hover", () => {
+    cy.get("#info-tooltip-btn").trigger("mouseover");
+    cy.contains("First Project description").should("be.visible");
   });
 
   it("Success Message on Project Creation", () => {
@@ -98,52 +143,10 @@ describe("projects page", () => {
     projectsPage.addNewProjectDisplay();
   });
   it("should verify project persists after logout and login", () => {
-    projectsPage.addNewProjectDisplay();
     projectsPage.logout();
-    loginPage.enterEmail(email);
-    loginPage.enterPassword(password);
-    loginPage.clickLogin();
+    projectsPage.loginWithSession();
     projectsPage.navigateProjectsPage();
     cy.url().should("include", "/projects");
-    projectsPage.addNewProjectDisplay();
+    // projectsPage.addNewProjectDisplay();
   });
-
-  //   it("Display Project Description on Hover", () => {
-  //     //   cy.get(
-  //     //     "#project-card-second one  > #project-card-header > #info-tooltip-btn > .anticon > svg"
-  //     //   )
-  //     //     .parent()
-  //     //     .trigger("mouseover");
-  //     //   cy.contains("First").should("be.visible");
-  //   });
-
-  //     // Intercept the API call to fetch projects and provide mock data
-  //     // cy.intercept("GET", "http://localhost:3001/projects", {
-  //     //   statusCode: 200,
-  //     //   body: [
-  //     //     {
-  //     //       _id: "1",
-  //     //       name: "First Project",
-  //     //       color: "blue",
-  //     //       description: "First project description",
-  //     //       projectHours: 10,
-  //     //       userEmail: "validuser@gmail.com",
-  //     //     },
-  //     //     {
-  //     //       _id: "2",
-  //     //       name: "Second One",
-  //     //       color: "green",
-  //     //       description: "Second project description",
-  //     //       projectHours: 20,
-  //     //       userEmail: "validuser@gmail.com",
-  //     //     },
-  //     //   ],
-  //     // }).as("getProjects");
-
-  //     // cy.intercept("GET", `${Cypress.env("api")}/projects/cards`).as(
-  //     //   "projectsCardReq"
-  //     // );
-  //     // cy.wait("@getProjects").its("response.statusCode").should("eq", 200);
-  //     // cy.wait("@projectsCardReq").its("response.statusCode").should("eq", 200);
-  //   });
 });

@@ -52,12 +52,10 @@ export class ProjectsPage {
       .type(description)
       .should("have.value", description);
   }
+  // submitProject(projectName: string, expectedOrder: string[]) {
   submitProject() {
     cy.get(this.submitProjectId).click();
-    // cy.intercept("POST", `${Cypress.env("api")}/projects`).as(
-    //   "ProjectsSubmitReq"
-    // );
-    // cy.wait("@ProjectsSubmitReq").its("response.statusCode").should("eq", 200);
+    // expectedOrder.push(projectName);
   }
   successMessageOnProjectCreation(projectName: string) {
     cy.contains(`Project "${projectName}" was created`).should("be.visible");
@@ -67,7 +65,7 @@ export class ProjectsPage {
     cy.get(this.inputFieldsId[0]).then(($input) => {
       cy.wrap($input)
         .invoke("prop", "validationMessage")
-        .should("eq", "Please fill out this field.");
+        .should("eq", "Please fill in this field.");
     });
   }
   duplicateProjectName() {

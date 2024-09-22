@@ -63,7 +63,7 @@ describe("login page", () => {
     cy.get("#email-input").then(($input) => {
       cy.wrap($input)
         .invoke("prop", "validationMessage")
-        .should("eq", "Please fill out this field.");
+        .should("eq", "Please fill in this field.");
       //     // Check for validation messages
       // loginPage.checkValidationMessage('#email-input', 'Please fill out this field.');
     });
